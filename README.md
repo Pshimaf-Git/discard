@@ -1,28 +1,47 @@
-## Project Overview
+# Discard
 
-This project demonstrates the use of GitHub Copilot to assist in writing and editing markdown files, specifically README.md documents. It showcases how AI can streamline documentation tasks for software projects.
+A lightweight Go package for safely discarding values, errors, or outputs in your code. Useful for ignoring return values or simplifying code where output is intentionally unused.
+
+## Installation
+
+```sh
+go get github.com/Pshimaf-Git/discard
+```
 
 ## Features
 
-- AI-assisted markdown editing
-- Automated README generation
-- Easy integration with development workflows
+- Discard any value or error without side effects.
+- Clean up code by removing unnecessary variable assignments.
 
-## Getting Started
+## Usage
 
-1. Clone the repository:
+### Discarding Values
 
-```bash
-git clone https://github.com/your-username/your-repo.git
+```go
+import "github.com/Pshimaf-Git/discard"
+
+result := someFunction()
+discard.Value(result)
 ```
 
-2. Open the project in your preferred editor.
-3. Use GitHub Copilot to generate or update documentation as needed.
+### Discarding Errors
 
-## Contributing
+```go
+import "github.com/Pshimaf-Git/discard"
 
-Contributions are welcome! Please open an issue or submit a pull request for improvements.
+_, err := anotherFunction()
+discard.Error(err)
+```
+
+### Discarding Multiple Values
+
+```go
+import "github.com/Pshimaf-Git/discard"
+
+a, b, c := getValues()
+discard.Values(a, b, c)
+```
 
 ## License
 
-This project is licensed under the MIT License.
+MIT License
