@@ -17,8 +17,6 @@ tasks:
 
   commit:
     desc: Commit changes with a message
-    vars:
-      msg: 'Update changes'
     cmds:
       - git add {{.files}}
       - git commit -m "{{.msg}}"
@@ -32,8 +30,6 @@ tasks:
 
   checkout:
     desc: Checkout to a specific branch
-    vars:
-      branch: 'master'
     cmds:
       - git checkout {{.branch}}
     silent: true
@@ -46,8 +42,6 @@ tasks:
 
   tag:
     desc: Create a new tag
-    vars:
-      tag: 'v1.0.0'
     cmds:
       - git tag {{.tag}}
       - git push origin {{.tag}}
@@ -55,9 +49,6 @@ tasks:
 
   release:
     desc: Create a new release
-    vars:
-      tag: 'v1.0.0'
-      msg: 'Release {{.tag}}'
     cmds:
       - git tag -a {{.tag}} -m "{{.msg}}"
       - git push origin {{.tag}}
@@ -65,8 +56,6 @@ tasks:
 
   commit_push:
     desc: Commit and push changes
-    vars:
-      msg: 'Update changes'
     cmds:
       - task commit msg="{{.msg}}" files="{{.files}}"
       - task push
