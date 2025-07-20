@@ -1,12 +1,14 @@
 package discard
 
+import "io"
+
 func ExampleDiscard() {
 	// Create a new Discard instance
 	d := New()
 
 	// Use the Discard instance to read and write data
 	n, err := d.Read(make([]byte, 10))
-	if n != 0 || err != nil {
+	if n != 0 || err != io.EOF {
 		panic("Read should return 0 bytes and no error")
 	}
 
@@ -16,20 +18,20 @@ func ExampleDiscard() {
 	}
 
 	// ReadFrom should also return 0 bytes and no error
-	n64, err := d.ReadFrom(nil)
+	n64, err := d.ReadFrom(&io.LimitedReader{})
 	if n64 != 0 || err != nil {
 		panic("ReadFrom should return 0 bytes and no error")
 	}
 
 	// ReadAt should return 0 bytes and no error
 	n, err = d.ReadAt(make([]byte, 10), 0)
-	if n != 0 || err != nil {
+	if n != 0 || err != io.EOF {
 		panic("ReadAt should return 0 bytes and no error")
 	}
 
 	// ReadByte should return 0 and no error
 	b, err := d.ReadByte()
-	if b != 0 || err != nil {
+	if b != 0 || err != io.EOF {
 		panic("ReadByte should return 0 and no error")
 	}
 
