@@ -1,0 +1,5 @@
+# This file is used to ignore files and directories in the repository.
+
+# Ignore Taskfile and task directories
+Taskfile.*
+task/*
