@@ -24,6 +24,54 @@ tasks:
       - git commit -m "{{.msg}}"
     silent: true
 
+  pull:
+    desc: Pull changes from the remote repository
+    cmds:
+      - git pull origin master
+    silent: true
+
+  checkout:
+    desc: Checkout to a specific branch
+    vars:
+      branch: 'master'
+    cmds:
+      - git checkout {{.branch}}
+    silent: true
+
+  push:
+    desc: Push changes to the current branch
+    cmds:
+      - git push origin HEAD
+    silent: true
+
+  tag:
+    desc: Create a new tag
+    vars:
+      tag: 'v1.0.0'
+    cmds:
+      - git tag {{.tag}}
+      - git push origin {{.tag}}
+    silent: true
+
+  release:
+    desc: Create a new release
+    vars:
+      tag: 'v1.0.0'
+      msg: 'Release {{.tag}}'
+    cmds:
+      - git tag -a {{.tag}} -m "{{.msg}}"
+      - git push origin {{.tag}}
+    silent: true
+
+  commit_push:
+    desc: Commit and push changes
+    vars:
+      msg: 'Update changes'
+    cmds:
+      - task commit msg="{{.msg}}"
+      - task push
+    silent: true
+
   up-deps:
     desc: Update dependencies
     cmds:
