@@ -4,7 +4,7 @@
 
 This package provides a type that implements all interfaces from Go's `io` package. It is designed to serve as a stub or placeholder wherever any `io` interface is required. This can be useful for testing, scaffolding, or situations where a no-op implementation is needed.
 
-## InstallInstallation
+## Installation
 
 ```sh
 go get github.com/Pshimaf-Git/discard
