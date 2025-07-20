@@ -19,9 +19,19 @@ go get github.com/Pshimaf-Git/discard
 ## Usage
 
 ```go
-import "github.com/Pshimaf-Git/discard"
+import
+(
+   "log"
 
-var discard io.Reader = discard.New()
+   "github.com/Pshimaf-Git/discard"
+)
+
+// for tests use logger which does not output anything
+var discardLogger = log.New(discard.New(), "", 1)
+
+var myhandler = NewMyHandler(db, cache, discardLogger)
+
+// testing code ...
 ```
 
 ## License
