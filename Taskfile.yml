@@ -68,7 +68,7 @@ tasks:
     vars:
       msg: 'Update changes'
     cmds:
-      - task commit msg="{{.msg}}"
+      - task commit msg="{{.msg}}" files="{{.files}}"
       - task push
     silent: true
 
