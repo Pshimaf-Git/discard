@@ -16,23 +16,71 @@ go get github.com/Pshimaf-Git/discard
 - Can be used as a drop-in replacement in any context expecting an `io` interface.
 - Useful for testing and mocking I/O operations.
 
-## Usage
+## Examples
+
+### Discarding Output from a Logger
 
 ```go
-import
-(
-   "log"
-
-   "github.com/Pshimaf-Git/discard"
+import (
+  "log"
+  "github.com/Pshimaf-Git/discard"
 )
 
-// for tests use logger which does not output anything
-var discardLogger = log.New(discard.New(), "", 1)
-
-var myhandler = NewMyHandler(db, cache, discardLogger)
-
-// testing code ...
+// Create a logger that writes to discard (no output)
+logger := log.New(discard.New(), "", log.LstdFlags)
+logger.Println("This will not be printed anywhere")
 ```
+
+### Using as a No-op Writer
+
+```go
+import (
+  "io"
+  "github.com/Pshimaf-Git/discard"
+)
+
+func writeSomething(w io.Writer) {
+  w.Write([]byte("data"))
+}
+
+// Discard output
+writeSomething(discard.New())
+```
+
+### Using as a No-op Reader
+
+```go
+import (
+  "io"
+  "github.com/Pshimaf-Git/discard"
+)
+
+func readSomething(r io.Reader) {
+  buf := make([]byte, 10)
+  r.Read(buf)
+}
+
+// Discard input (always returns EOF)
+readSomething(discard.New())
+```
+
+### Using as a No-op Closer
+
+```go
+import (
+  "io"
+  "github.com/Pshimaf-Git/discard"
+)
+
+func closeResource(c io.Closer) {
+  c.Close()
+}
+
+// Discard close operation (does nothing)
+closeResource(discard.New())
+```
+
+You can use `discard.New()` anywhere an `io.Reader`, `io.Writer`, `io.Closer`, or any other `io` interface is required, making it ideal for tests, mocks, or disabling output/input.
 
 ## License
 
