@@ -1,0 +1,78 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    desc: Run the default task
+    cmds:
+      - task all
+    silent: true
+
+  push_master:
+    desc: Push changes to the master branch
+    cmds:
+      - git push origin master
+    silent: true
+
+  commit:
+    desc: Commit changes with a message
+    vars:
+      msg: 'Update changes'
+    cmds:
+      - git add {{.files}}
+      - git commit -m "{{.msg}}"
+    silent: true
+
+  up-deps:
+    desc: Update dependencies
+    cmds:
+      - go get -u ./...
+      - go mod tidy
+    silent: true
+
+  test:
+    desc: Run tests
+    cmds:
+      - go test -v -cover -timeout 30s ./...
+    env:
+      GOFLAGS: -mod=readonly
+    silent: true
+
+  lint:
+    desc: Run linters
+    cmds:
+      - golangci-lint run --timeout 5m
+    silent: true
+
+  fmt:
+    desc: Format code
+    cmds:
+      - go fmt ./...
+    silent: true
+
+  deps:
+    desc: Install dependencies
+    cmds:
+      - go mod tidy
+      - go mod download
+    silent: true
+
+  clean:
+    desc: Clean up build artifacts
+    cmds:
+      - go clean -modcache
+      - go clean -cache
+      - go clean -testcache
+    silent: true
+
+  all:
+    desc: Run all tasks
+    cmds:
+      - task clean
+      - task deps
+      - task up-deps
+      - task fmt
+      - task lint
+      - task test
+    silent: true
