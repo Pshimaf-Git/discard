@@ -50,7 +50,7 @@ func New() Discard {
 // Read implements the io.Reader interface for Discard.
 // It discards any input and always returns 0, nil, indicating that no bytes were read and no error occurred.
 func (Discard) Read(p []byte) (n int, err error) {
-	return
+	return 0, io.EOF
 }
 
 // ReadFrom implements the io.ReaderFrom interface for Discard.
@@ -62,13 +62,13 @@ func (Discard) ReadFrom(r io.Reader) (n int64, err error) {
 // ReadAt implements the io.ReaderAt interface for Discard.
 // It discards any input and always returns 0, nil.
 func (Discard) ReadAt(p []byte, off int64) (n int, err error) {
-	return
+	return 0, io.EOF
 }
 
 // ReadByte implements the io.ByteReader interface for Discard.
 // It always returns 0, nil, discarding any input.
 func (Discard) ReadByte() (b byte, err error) {
-	return
+	return 0, io.EOF
 }
 
 // UnreadByte implements the io.ByteScanner interface for Discard.
@@ -80,7 +80,7 @@ func (Discard) UnreadByte() (err error) {
 // ReadRune implements the io.RuneReader interface for Discard.
 // It always returns 0, 0, nil, discarding any input.
 func (Discard) ReadRune() (r rune, size int, err error) {
-	return
+	return 0, 0, io.EOF
 }
 
 // UnreadRune implements the io.RuneScanner interface for Discard.
