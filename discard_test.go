@@ -133,6 +133,7 @@ func TestDiscard(t *testing.T) {
 
 	reader := bufio.NewReader(d)
 	writer := bufio.NewWriter(d)
+	scanner := bufio.NewScanner(d)
 
 	// Test reading from Discard
 	_, err := reader.Read(make([]byte, 10))
@@ -149,6 +150,12 @@ func TestDiscard(t *testing.T) {
 
 	err = writer.Flush()
 	assert.NoError(t, err, "Flushing Discard writer should not return an error")
+
+	// Test scanning from Discard
+	scanner.Split(bufio.ScanLines)
+	scanner.Buffer(make([]byte, 10), 100)
+	scanner.Scan()
+	assert.False(t, scanner.Scan(), "Scanner should not scan any lines from Discard")
 
 	limitR := io.LimitReader(d, 100)
 	_, err = limitR.Read(make([]byte, 10))
