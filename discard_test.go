@@ -1,10 +1,15 @@
 package discard
 
 import (
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func isEOF(err error) bool {
+	return err == io.EOF
+}
 
 func TestNew(t *testing.T) {
 	t.Parallel()
@@ -17,7 +22,7 @@ func TestRead(t *testing.T) {
 	d := New()
 	n, err := d.Read(make([]byte, 10))
 	assert.Equal(t, 0, n, "Read should return 0 bytes read")
-	assert.NoError(t, err, "Read should not return an error")
+	assert.Truef(t, isEOF(err), "Read should return a io.EOF, got: %s", err.Error())
 }
 
 func TestReadFrom(t *testing.T) {
@@ -33,7 +38,7 @@ func TestReadAt(t *testing.T) {
 	d := New()
 	n, err := d.ReadAt(make([]byte, 10), 0)
 	assert.Equal(t, 0, n, "ReadAt should return 0 bytes read")
-	assert.NoError(t, err, "ReadAt should not return an error")
+	assert.Truef(t, isEOF(err), "ReadAt should return a io.EOF, got: %s", err.Error())
 }
 
 func TestReadByte(t *testing.T) {
@@ -41,7 +46,7 @@ func TestReadByte(t *testing.T) {
 	d := New()
 	b, err := d.ReadByte()
 	assert.Equal(t, byte(0), b, "ReadByte should return 0")
-	assert.NoError(t, err, "ReadByte should not return an error")
+	assert.Truef(t, isEOF(err), "ReadByte should return a io.EOF, got: %s", err.Error())
 }
 
 func TestUnreadByte(t *testing.T) {
@@ -57,7 +62,7 @@ func TestReadRune(t *testing.T) {
 	r, size, err := d.ReadRune()
 	assert.Equal(t, rune(0), r, "ReadRune should return 0 rune")
 	assert.Equal(t, 0, size, "ReadRune should return size 0")
-	assert.NoError(t, err, "ReadRune should not return an error")
+	assert.Truef(t, isEOF(err), "ReadRune should return a io.EOF, got: %s", err.Error())
 }
 
 func TestUnreadRune(t *testing.T) {
@@ -78,7 +83,7 @@ func TestWrite(t *testing.T) {
 func TestWriteByte(t *testing.T) {
 	t.Parallel()
 	d := New()
-	err := d.WriteByte('a')
+	err := d.WriteByte('T')
 	assert.NoError(t, err, "WriteByte should not return an error")
 }
 
